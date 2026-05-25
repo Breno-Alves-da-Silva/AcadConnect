@@ -30,7 +30,7 @@
             <h1>Publicar artigo</h1>
             <p class="subtitle">Compartilhe um resumo acadêmico com outros estudantes.</p>
 
-            <form class="form" action="feed.php" method="POST">
+            <form class="form" action="php/salvar_artigo.php" method="POST">
                 <label for="titulo">Título do artigo:</label>
                 <input type="text" id="titulo" name="titulo" required>
 

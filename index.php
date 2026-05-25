@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AcadConnect | Login</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="auth-page">
 
     <main class="auth-container">
@@ -15,7 +17,7 @@
                 <p>Conectando alunos, artigos e conhecimento.</p>
             </div>
 
-            <form class="form" action="feed.php" method="POST">
+            <form class="form" action="php/login.php" method="POST">
                 <h2>Entrar</h2>
 
                 <label for="email">E-mail</label>
@@ -36,4 +38,5 @@
 
     <script src="js/script.js"></script>
 </body>
+
 </html>

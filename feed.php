@@ -1,3 +1,19 @@
+<?php
+session_start();
+include("php/conexao.php");
+
+if(!isset($_SESSION['usuario_id'])){
+    header("Location: index.php");
+    exit();
+}
+
+$sql = "SELECT artigos.*, usuarios.nome, usuarios.curso 
+        FROM artigos
+        INNER JOIN usuarios ON artigos.usuario_id = usuarios.id
+        ORDER BY artigos.data_publicacao DESC";
+
+$resultado = mysqli_query($conexao, $sql);
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,7 +37,7 @@
             <a href="feed.php">Feed</a>
             <a href="publicar.php">Publicar</a>
             <a href="perfil.php">Perfil</a>
-            <a href="index.php">Sair</a>
+            <a href="php/logout.php">Sair</a>
         </nav>
     </header>
 
@@ -29,8 +45,8 @@
         <aside class="sidebar-left">
             <section class="profile-card">
                 <div class="avatar">B</div>
-                <h3>Breno Silva</h3>
-                <p>Engenharia da Computação</p>
+                <h3><?php echo $_SESSION['usuario_nome']; ?></h3>
+                <p><?php echo $_SESSION['usuario_curso']; ?></p>
                 <a class="btn-primary small-btn" href="publicar.php">Publicar artigo</a>
             </section>
 
@@ -43,32 +59,40 @@
         </aside>
 
         <section class="feed">
-            <article class="post-card">
-                <div class="post-header">
-                    <div class="avatar small">A</div>
-                    <div>
-                        <h4>Ana Martins</h4>
-                        <span>Pedagogia • há 2 horas</span>
-                    </div>
-                </div>
+        <?php while($artigo = mysqli_fetch_assoc($resultado)){ ?>
 
-                <a href="artigo.php" class="post-title">A importância da tecnologia na educação</a>
+    <article class="post-card">
+        <div class="post-header">
+            <div class="avatar small">
+                <?php echo strtoupper(substr($artigo['nome'], 0, 1)); ?>
+            </div>
 
-                <p>Este artigo apresenta como ferramentas digitais podem ajudar no aprendizado dos alunos dentro e fora da sala de aula.</p>
+            <div>
+                <h4><?php echo $artigo['nome']; ?></h4>
+                <span><?php echo $artigo['curso']; ?> • <?php echo $artigo['data_publicacao']; ?></span>
+            </div>
+        </div>
 
-                <div class="tags">
-                    <span>#Educação</span>
-                    <span>#Tecnologia</span>
-                </div>
+        <a href="artigo.php?id=<?php echo $artigo['id']; ?>" class="post-title">
+            <?php echo $artigo['titulo']; ?>
+        </a>
 
-                <div class="actions">
-                    <button class="reaction-btn">📘 Útil <span>12</span></button>
-                    <button class="reaction-btn">💡 Interessante <span>8</span></button>
-                    <button class="reaction-btn">❓ Dúvida <span>3</span></button>
-                    <a href="artigo.php" class="action-link">💬 Comentar</a>
-                    <button class="share-btn">🔗 Compartilhar</button>
-                </div>
-            </article>
+        <p><?php echo $artigo['resumo']; ?></p>
+
+        <div class="tags">
+            <span>#<?php echo $artigo['categoria']; ?></span>
+        </div>
+
+        <div class="actions">
+            <button class="reaction-btn">📘 Útil <span>0</span></button>
+            <button class="reaction-btn">💡 Interessante <span>0</span></button>
+            <button class="reaction-btn">❓ Dúvida <span>0</span></button>
+            <a href="artigo.php?id=<?php echo $artigo['id']; ?>" class="action-link">💬 Comentar</a>
+            <button class="share-btn">🔗 Compartilhar</button>
+        </div>
+    </article>
+
+        <?php } ?>
         </section>
 
         <aside class="sidebar-right">

@@ -1,11 +1,32 @@
+<?php
+session_start();
+include("php/conexao.php");
+
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: index.php");
+    exit();
+}
+
+$id = $_GET['id'];
+
+$sql = "SELECT artigos.*, usuarios.nome, usuarios.curso
+        FROM artigos
+        INNER JOIN usuarios ON artigos.usuario_id = usuarios.id
+        WHERE artigos.id = '$id'";
+
+$resultado = mysqli_query($conexao, $sql);
+$artigo = mysqli_fetch_assoc($resultado);
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AcadConnect | Artigo</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
     <header class="topbar">
@@ -28,23 +49,27 @@
     <main class="article-layout">
         <article class="content-card article-card">
             <div class="post-header">
-                <div class="avatar small">A</div>
+                <div class="avatar small">
+                    <?php echo strtoupper(substr($artigo['nome'], 0, 1)); ?>
+                </div>
                 <div>
-                    <h4>Ana Martins</h4>
-                    <span>Pedagogia • publicado há 2 horas</span>
+                    <h4><?php echo $artigo['nome']; ?></h4>
+
+                    <span>
+                        <?php echo $artigo['curso']; ?> •
+                        <?php echo $artigo['data_publicacao']; ?>
+                    </span>
                 </div>
             </div>
 
-            <h1>A importância da tecnologia na educação</h1>
-
+            <h1><?php echo $artigo['titulo']; ?></h1>
             <div class="tags">
-                <span>#Educação</span>
-                <span>#Tecnologia</span>
+                <span>#<?php echo $artigo['categoria']; ?></span>
             </div>
 
-            <p>A tecnologia tem se tornado cada vez mais presente no ambiente educacional.</p>
-            <p>Plataformas digitais, vídeos, fóruns e sistemas de aprendizagem ajudam o aluno a estudar de forma mais interativa.</p>
+            <p><?php echo $artigo['resumo']; ?></p>
 
+            <p><?php echo $artigo['conteudo']; ?></p>
             <div class="actions">
                 <button class="reaction-btn">📘 Útil <span>12</span></button>
                 <button class="reaction-btn">💡 Interessante <span>8</span></button>
@@ -83,4 +108,5 @@
 
     <script src="js/script.js"></script>
 </body>
+
 </html>

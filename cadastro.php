@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AcadConnect | Cadastro</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="auth-page">
 
     <main class="auth-container">
@@ -15,7 +17,7 @@
                 <p>Crie seu perfil acadêmico para publicar artigos.</p>
             </div>
 
-            <form class="form grid-form" action="feed.php" method="POST">
+            <form class="form grid-form" action="php/cadastrar_usuario.php" method="POST">
                 <div>
                     <label for="nome">Nome completo:</label>
                     <input type="text" id="nome" name="nome" required>
@@ -76,4 +78,5 @@
 
     <script src="js/script.js"></script>
 </body>
+
 </html>
