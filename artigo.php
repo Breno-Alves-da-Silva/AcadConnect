@@ -9,14 +9,40 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $id = $_GET['id'];
 
-$sql = "SELECT artigos.*, usuarios.nome, usuarios.curso
+$sql = "SELECT artigos.*, usuarios.nome, usuarios.curso, usuarios.id as autor_id
         FROM artigos
         INNER JOIN usuarios ON artigos.usuario_id = usuarios.id
         WHERE artigos.id = '$id'";
 
 $resultado = mysqli_query($conexao, $sql);
 $artigo = mysqli_fetch_assoc($resultado);
+
+$sql_comentarios = "SELECT comentarios.*, usuarios.nome
+                    FROM comentarios
+                    INNER JOIN usuarios ON comentarios.usuario_id = usuarios.id
+                    WHERE comentarios.artigo_id = '$id'
+                    ORDER BY comentarios.data_comentario DESC";
+
+$resultado_comentarios = mysqli_query($conexao, $sql_comentarios);
+
+$sql_reacoes = "SELECT tipo, COUNT(*) as total 
+                FROM reacoes 
+                WHERE artigo_id = '$id'
+                GROUP BY tipo";
+
+$resultado_reacoes = mysqli_query($conexao, $sql_reacoes);
+
+$reacoes = [
+    'util' => 0,
+    'interessante' => 0,
+    'duvida' => 0
+];
+
+while($linha = mysqli_fetch_assoc($resultado_reacoes)){
+    $reacoes[$linha['tipo']] = $linha['total'];
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -29,84 +55,160 @@ $artigo = mysqli_fetch_assoc($resultado);
 
 <body>
 
-    <header class="topbar">
-        <a class="logo" href="feed.php">
-            <span>A</span> AcadConnect
-        </a>
+<header class="topbar">
+    <a class="logo" href="feed.php">
+        <span>A</span> AcadConnect
+    </a>
 
-        <div class="top-search">
-            <input type="text" placeholder="Pesquisar artigos, autores ou temas...">
+    <nav class="top-nav">
+        <a href="feed.php">Feed</a>
+        <a href="publicar.php">Publicar</a>
+        <a href="perfil.php">Perfil</a>
+        <a href="php/logout.php">Sair</a>
+    </nav>
+</header>
+
+<main class="article-layout">
+
+    <article class="content-card article-card">
+
+        <div class="post-header">
+
+            <div class="avatar small">
+                <?php echo strtoupper(substr($artigo['nome'], 0, 1)); ?>
+            </div>
+
+            <div>
+                <h4><?php echo htmlspecialchars($artigo['nome']); ?></h4>
+
+                <span>
+                    <?php echo htmlspecialchars($artigo['curso']); ?> •
+                    <?php echo $artigo['data_publicacao']; ?>
+                </span>
+            </div>
+
         </div>
 
-        <nav class="top-nav">
-            <a href="feed.php">Feed</a>
-            <a href="publicar.php">Publicar</a>
-            <a href="perfil.php">Perfil</a>
-            <a href="index.php">Sair</a>
-        </nav>
-    </header>
+        <h1><?php echo htmlspecialchars($artigo['titulo']); ?></h1>
 
-    <main class="article-layout">
-        <article class="content-card article-card">
-            <div class="post-header">
-                <div class="avatar small">
-                    <?php echo strtoupper(substr($artigo['nome'], 0, 1)); ?>
-                </div>
-                <div>
-                    <h4><?php echo $artigo['nome']; ?></h4>
-
-                    <span>
-                        <?php echo $artigo['curso']; ?> •
-                        <?php echo $artigo['data_publicacao']; ?>
-                    </span>
-                </div>
-            </div>
-
-            <h1><?php echo $artigo['titulo']; ?></h1>
-            <div class="tags">
-                <span>#<?php echo $artigo['categoria']; ?></span>
-            </div>
-
-            <p><?php echo $artigo['resumo']; ?></p>
-
-            <p><?php echo $artigo['conteudo']; ?></p>
-            <div class="actions">
-                <button class="reaction-btn">📘 Útil <span>12</span></button>
-                <button class="reaction-btn">💡 Interessante <span>8</span></button>
-                <button class="reaction-btn">❓ Dúvida <span>3</span></button>
-                <button class="share-btn">🔗 Compartilhar</button>
-                <button class="btn-primary contact-btn">Contato com autor</button>
-            </div>
-        </article>
-
-        <section class="content-card comments-card">
-            <h2>Comentários</h2>
-
-            <form class="comment-form">
-                <textarea rows="3" placeholder="Escreva um comentário..."></textarea>
-                <button type="button" class="btn-primary add-comment-btn">Comentar</button>
-            </form>
-
-            <div class="comments-list">
-                <div class="comment">
-                    <strong>João Pereira</strong>
-                    <p>Muito bom. Acho interessante relacionar isso com ensino híbrido.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <div class="modal" id="contactModal">
-        <div class="modal-card">
-            <button class="close-modal">×</button>
-            <h2>Contato com autor</h2>
-            <p>Envie uma mensagem para Ana Martins.</p>
-            <textarea rows="4" placeholder="Digite sua mensagem..."></textarea>
-            <button class="btn-primary">Enviar mensagem</button>
+        <div class="tags">
+            <span>#<?php echo htmlspecialchars($artigo['categoria']); ?></span>
         </div>
+
+        <p><?php echo htmlspecialchars($artigo['resumo']); ?></p>
+
+        <p>
+            <?php echo nl2br(htmlspecialchars($artigo['conteudo'])); ?>
+        </p>
+
+        <div class="actions">
+
+            <a class="reaction-btn"
+               href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=util">
+                📘 Útil <span><?php echo $reacoes['util']; ?></span>
+            </a>
+
+            <a class="reaction-btn"
+               href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=interessante">
+                💡 Interessante <span><?php echo $reacoes['interessante']; ?></span>
+            </a>
+
+            <a class="reaction-btn"
+               href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=duvida">
+                ❓ Dúvida <span><?php echo $reacoes['duvida']; ?></span>
+            </a>
+
+            <button class="btn-primary contact-btn">
+                Contato com autor
+            </button>
+
+        </div>
+
+    </article>
+
+    <section class="content-card comments-card">
+
+        <h2>Comentários</h2>
+
+        <form class="comment-form"
+              action="php/salvar_comentario.php"
+              method="POST">
+
+            <input type="hidden"
+                   name="artigo_id"
+                   value="<?php echo $artigo['id']; ?>">
+
+            <textarea
+                name="comentario"
+                rows="3"
+                placeholder="Escreva um comentário..."
+                required></textarea>
+
+            <button type="submit" class="btn-primary">
+                Comentar
+            </button>
+
+        </form>
+
+        <?php while ($comentario = mysqli_fetch_assoc($resultado_comentarios)) { ?>
+
+            <div class="comment">
+
+                <strong>
+                    <?php echo htmlspecialchars($comentario['nome']); ?>
+                </strong>
+
+                <p>
+                    <?php echo nl2br(htmlspecialchars($comentario['comentario'])); ?>
+                </p>
+
+            </div>
+
+        <?php } ?>
+
+    </section>
+
+</main>
+
+<div class="modal" id="contactModal">
+
+    <div class="modal-card">
+
+        <button class="close-modal">×</button>
+
+        <h2>Contato com autor</h2>
+
+        <p>
+            Envie uma mensagem para
+            <?php echo htmlspecialchars($artigo['nome']); ?>.
+        </p>
+
+        <form action="php/salvar_contato.php" method="POST">
+
+            <input type="hidden"
+                   name="artigo_id"
+                   value="<?php echo $artigo['id']; ?>">
+
+            <input type="hidden"
+                   name="autor_id"
+                   value="<?php echo $artigo['autor_id']; ?>">
+
+            <textarea
+                name="mensagem"
+                rows="4"
+                placeholder="Digite sua mensagem..."
+                required></textarea>
+
+            <button type="submit" class="btn-primary">
+                Enviar mensagem
+            </button>
+
+        </form>
+
     </div>
 
-    <script src="js/script.js"></script>
-</body>
+</div>
 
+<script src="js/script.js"></script>
+</body>
 </html>

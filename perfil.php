@@ -11,7 +11,6 @@ $usuario_id = $_SESSION['usuario_id'];
 
 $sql_usuario = "SELECT * FROM usuarios WHERE id = '$usuario_id'";
 $resultado_usuario = mysqli_query($conexao, $sql_usuario);
-
 $usuario = mysqli_fetch_assoc($resultado_usuario);
 
 $sql_artigos = "SELECT * FROM artigos 
@@ -19,7 +18,17 @@ $sql_artigos = "SELECT * FROM artigos
                 ORDER BY data_publicacao DESC";
 
 $resultado_artigos = mysqli_query($conexao, $sql_artigos);
+
+$sql_contatos = "SELECT contatos.*, usuarios.nome as remetente, artigos.titulo
+                 FROM contatos
+                 INNER JOIN usuarios ON contatos.usuario_id = usuarios.id
+                 INNER JOIN artigos ON contatos.artigo_id = artigos.id
+                 WHERE contatos.autor_id = '$usuario_id'
+                 ORDER BY contatos.data_contato DESC";
+
+$resultado_contatos = mysqli_query($conexao, $sql_contatos);
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -32,71 +41,130 @@ $resultado_artigos = mysqli_query($conexao, $sql_artigos);
 
 <body>
 
-    <header class="topbar">
-        <a class="logo" href="feed.php">
-            <span>A</span> AcadConnect
-        </a>
+<header class="topbar">
+    <a class="logo" href="feed.php">
+        <span>A</span> AcadConnect
+    </a>
 
-        <div class="top-search">
-            <input type="text" placeholder="Pesquisar artigos, autores ou temas...">
+    <nav class="top-nav">
+        <a href="feed.php">Feed</a>
+        <a href="publicar.php">Publicar</a>
+        <a href="perfil.php">Perfil</a>
+        <a href="php/logout.php">Sair</a>
+    </nav>
+</header>
+
+<main class="page-container">
+
+    <section class="profile-hero">
+
+        <?php if(!empty($usuario['avatar'])){ ?>
+
+            <img class="avatar big"
+                 src="uploads/<?php echo $usuario['avatar']; ?>">
+
+        <?php } else { ?>
+
+            <div class="avatar big">
+                <?php echo strtoupper(substr($usuario['nome'], 0, 1)); ?>
+            </div>
+
+        <?php } ?>
+
+        <div>
+
+            <h1><?php echo htmlspecialchars($usuario['nome']); ?></h1>
+
+            <p>
+                <?php echo htmlspecialchars($usuario['curso']); ?> •
+                <?php echo htmlspecialchars($usuario['instituicao']); ?>
+            </p>
+
+            <p class="bio">
+                <?php echo nl2br(htmlspecialchars($usuario['bio'])); ?>
+            </p>
+
+            <a href="editar_perfil.php"
+               class="btn-primary small-btn">
+                Editar perfil
+            </a>
+
         </div>
 
-        <nav class="top-nav">
-            <a href="feed.php">Feed</a>
-            <a href="publicar.php">Publicar</a>
-            <a href="perfil.php">Perfil</a>
-            <a href="index.php">Sair</a>
-        </nav>
-    </header>
+    </section>
 
-    <main class="page-container">
-        <section class="profile-hero">
-            <div class="avatar big">B</div>
-            <div>
-                <h1><?php echo $usuario['nome']; ?></h1>
+    <section class="content-card">
+
+        <h2>Meus artigos</h2>
+
+        <?php while ($artigo = mysqli_fetch_assoc($resultado_artigos)) { ?>
+
+            <article class="mini-article">
+
+                <div>
+
+                    <h3>
+                        <?php echo htmlspecialchars($artigo['titulo']); ?>
+                    </h3>
+
+                    <p>
+                        #<?php echo htmlspecialchars($artigo['categoria']); ?>
+                    </p>
+
+                </div>
+
+                <div class="mini-actions">
+
+                    <a href="artigo.php?id=<?php echo $artigo['id']; ?>">
+                        Ver
+                    </a>
+
+                    <a href="editar_artigo.php?id=<?php echo $artigo['id']; ?>">
+                        Editar
+                    </a>
+
+                    <a href="php/deletar_artigo.php?id=<?php echo $artigo['id']; ?>"
+                       onclick="return confirm('Tem certeza que deseja excluir este artigo?')">
+                        Excluir
+                    </a>
+
+                </div>
+
+            </article>
+
+        <?php } ?>
+
+    </section>
+
+    <section class="content-card">
+
+        <h2>Mensagens recebidas</h2>
+
+        <?php while($contato = mysqli_fetch_assoc($resultado_contatos)){ ?>
+
+            <div class="comment">
+
+                <strong>
+                    <?php echo htmlspecialchars($contato['remetente']); ?>
+                </strong>
+
                 <p>
-                    <?php echo $usuario['curso']; ?> •
-                    <?php echo $usuario['instituicao']; ?>
+                    <strong>Artigo:</strong>
+                    <?php echo htmlspecialchars($contato['titulo']); ?>
                 </p>
-                <p class="bio">
-                    <?php echo $usuario['bio']; ?>
+
+                <p>
+                    <?php echo nl2br(htmlspecialchars($contato['mensagem'])); ?>
                 </p>
+
             </div>
-        </section>
 
-        <section class="content-card">
-            <h2>Meus artigos</h2>
+        <?php } ?>
 
-            <?php while ($artigo = mysqli_fetch_assoc($resultado_artigos)) { ?>
+    </section>
 
-                <article class="mini-article">
+</main>
 
-                    <div>
-                        <h3><?php echo $artigo['titulo']; ?></h3>
-
-                        <p>
-                            #<?php echo $artigo['categoria']; ?>
-                        </p>
-                    </div>
-
-                    <div class="mini-actions">
-                        <a href="artigo.php?id=<?php echo $artigo['id']; ?>">Ver</a>
-
-                        <a href="editar_artigo.php?id=<?php echo $artigo['id']; ?>">Editar</a>
-
-                        <a href="php/deletar_artigo.php?id=<?php echo $artigo['id']; ?>"
-                            onclick="return confirm('Tem certeza que deseja excluir este artigo?')">
-                            Excluir
-                        </a>
-                    </div>
-
-                </article>
-
-            <?php } ?>
-        </section>
-    </main>
-
-    <script src="js/script.js"></script>
+<script src="js/script.js"></script>
 </body>
-
 </html>
