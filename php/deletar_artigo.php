@@ -11,7 +11,9 @@ if(!isset($_SESSION['usuario_id'])){
 $id = $_GET['id'];
 $usuario_id = $_SESSION['usuario_id'];
 
-$sql = "DELETE FROM artigos WHERE id = '$id' AND usuario_id = '$usuario_id'";
+$sql = "DELETE FROM artigos 
+        WHERE id = '$id' 
+        AND usuario_id = '$usuario_id'";
 
 if(mysqli_query($conexao, $sql)){
     header("Location: ../perfil.php");
