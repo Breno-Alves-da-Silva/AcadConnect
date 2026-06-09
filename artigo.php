@@ -8,8 +8,13 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 
 $id = $_GET['id'];
+$sql_visualizacao = "UPDATE artigos 
+                     SET visualizacoes = visualizacoes + 1 
+                     WHERE id = '$id'";
 
-$sql = "SELECT artigos.*, usuarios.nome, usuarios.curso, usuarios.id as autor_id
+mysqli_query($conexao, $sql_visualizacao);
+
+$sql = "SELECT artigos.*, usuarios.nome, usuarios.curso, usuarios.avatar, usuarios.id as autor_id
         FROM artigos
         INNER JOIN usuarios ON artigos.usuario_id = usuarios.id
         WHERE artigos.id = '$id'";
@@ -38,7 +43,7 @@ $reacoes = [
     'duvida' => 0
 ];
 
-while($linha = mysqli_fetch_assoc($resultado_reacoes)){
+while ($linha = mysqli_fetch_assoc($resultado_reacoes)) {
     $reacoes[$linha['tipo']] = $linha['total'];
 }
 ?>
@@ -55,160 +60,217 @@ while($linha = mysqli_fetch_assoc($resultado_reacoes)){
 
 <body>
 
-<header class="topbar">
-    <a class="logo" href="feed.php">
-        <span>A</span> AcadConnect
-    </a>
+    <header class="topbar">
+        <a class="logo" href="feed.php">
+            <span>A</span> AcadConnect
+        </a>
 
-    <nav class="top-nav">
-        <a href="feed.php">Feed</a>
-        <a href="publicar.php">Publicar</a>
-        <a href="perfil.php">Perfil</a>
-        <a href="php/logout.php">Sair</a>
-    </nav>
-</header>
+        <nav class="top-nav">
+            <a href="feed.php">Feed</a>
+            <a href="publicar.php">Publicar</a>
+            <a href="perfil.php">Perfil</a>
+            <a href="php/logout.php">Sair</a>
+        </nav>
+    </header>
 
-<main class="article-layout">
+    <main class="article-layout">
 
-    <article class="content-card article-card">
+        <article class="content-card article-card">
 
-        <div class="post-header">
+            <div class="post-header">
 
-            <div class="avatar small">
-                <?php echo strtoupper(substr($artigo['nome'], 0, 1)); ?>
+                <?php if (!empty($artigo['avatar'])) { ?>
+                    <img class="avatar small" src="uploads/<?php echo $artigo['avatar']; ?>">
+                <?php } else { ?>
+                    <div class="avatar small">
+                        <?php echo strtoupper(substr($artigo['nome'], 0, 1)); ?>
+                    </div>
+                <?php } ?>
+
+                <div>
+                    <h4><?php echo htmlspecialchars($artigo['nome']); ?></h4>
+
+                    <span>
+                        <?php echo htmlspecialchars($artigo['curso']); ?> •
+                        <?php echo $artigo['data_publicacao']; ?>
+                    </span>
+                </div>
+
             </div>
 
-            <div>
-                <h4><?php echo htmlspecialchars($artigo['nome']); ?></h4>
-
-                <span>
-                    <?php echo htmlspecialchars($artigo['curso']); ?> •
-                    <?php echo $artigo['data_publicacao']; ?>
-                </span>
-            </div>
-
-        </div>
-
-        <h1><?php echo htmlspecialchars($artigo['titulo']); ?></h1>
-
-        <div class="tags">
-            <span>#<?php echo htmlspecialchars($artigo['categoria']); ?></span>
-        </div>
-
-        <p><?php echo htmlspecialchars($artigo['resumo']); ?></p>
-
-        <p>
-            <?php echo nl2br(htmlspecialchars($artigo['conteudo'])); ?>
-        </p>
-
-        <div class="actions">
-
-            <a class="reaction-btn"
-               href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=util">
-                📘 Útil <span><?php echo $reacoes['util']; ?></span>
-            </a>
-
-            <a class="reaction-btn"
-               href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=interessante">
-                💡 Interessante <span><?php echo $reacoes['interessante']; ?></span>
-            </a>
-
-            <a class="reaction-btn"
-               href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=duvida">
-                ❓ Dúvida <span><?php echo $reacoes['duvida']; ?></span>
-            </a>
-
-            <button class="btn-primary contact-btn">
-                Contato com autor
-            </button>
-
-        </div>
-
-    </article>
-
-    <section class="content-card comments-card">
-
-        <h2>Comentários</h2>
-
-        <form class="comment-form"
-              action="php/salvar_comentario.php"
-              method="POST">
-
-            <input type="hidden"
-                   name="artigo_id"
-                   value="<?php echo $artigo['id']; ?>">
-
-            <textarea
-                name="comentario"
-                rows="3"
-                placeholder="Escreva um comentário..."
-                required></textarea>
-
-            <button type="submit" class="btn-primary">
-                Comentar
-            </button>
-
-        </form>
-
-        <?php while ($comentario = mysqli_fetch_assoc($resultado_comentarios)) { ?>
-
-            <div class="comment">
-
-                <strong>
-                    <?php echo htmlspecialchars($comentario['nome']); ?>
-                </strong>
-
+            <h1><?php echo htmlspecialchars($artigo['titulo']); ?></h1>
+            <div class="article-info">
                 <p>
-                    <?php echo nl2br(htmlspecialchars($comentario['comentario'])); ?>
+                    <strong>Autor(es):</strong>
+                    <?php echo htmlspecialchars($artigo['autores']); ?>
                 </p>
 
+                <p>
+                    <strong>Palavras-chave:</strong>
+                    <?php echo htmlspecialchars($artigo['palavras_chave']); ?>
+                </p>
+
+                <p>
+                    <strong>Visualizações:</strong>
+                    <?php echo $artigo['visualizacoes']; ?>
+                </p>
             </div>
 
-        <?php } ?>
+            <div class="tags">
+                <span>#<?php echo htmlspecialchars($artigo['categoria']); ?></span>
+            </div>
 
-    </section>
+            <p><?php echo htmlspecialchars($artigo['resumo']); ?></p>
 
-</main>
+            <p>
+                <?php echo nl2br(htmlspecialchars($artigo['conteudo'])); ?>
+            </p>
+            <?php if (!empty($artigo['pdf'])) { ?>
 
-<div class="modal" id="contactModal">
+                <div class="pdf-actions">
+                    <a class="btn-primary pdf-btn"
+                        target="_blank"
+                        href="uploads/<?php echo $artigo['pdf']; ?>">
+                        📄 Visualizar PDF
+                    </a>
 
-    <div class="modal-card">
+                    <a class="btn-primary pdf-btn"
+                        download
+                        href="uploads/<?php echo $artigo['pdf']; ?>">
+                        📥 Baixar PDF
+                    </a>
+                </div>
 
-        <button class="close-modal">×</button>
+            <?php } ?>
+            <?php if (!empty($artigo['referencias'])) { ?>
+                <div class="content-card referencias-card">
+                    <h3>Referências bibliográficas</h3>
 
-        <h2>Contato com autor</h2>
+                    <p>
+                        <?php echo nl2br(htmlspecialchars($artigo['referencias'])); ?>
+                    </p>
+                </div>
+            <?php } ?>
 
-        <p>
-            Envie uma mensagem para
-            <?php echo htmlspecialchars($artigo['nome']); ?>.
-        </p>
+            <div class="content-card responsabilidade-card">
+                <h3>Responsabilidade acadêmica</h3>
 
-        <form action="php/salvar_contato.php" method="POST">
+                <p>
+                    O autor declara ser responsável pelo conteúdo publicado, incluindo autoria,
+                    fontes utilizadas e referências bibliográficas.
+                </p>
+            </div>
 
-            <input type="hidden"
-                   name="artigo_id"
-                   value="<?php echo $artigo['id']; ?>">
 
-            <input type="hidden"
-                   name="autor_id"
-                   value="<?php echo $artigo['autor_id']; ?>">
+            <div class="actions">
 
-            <textarea
-                name="mensagem"
-                rows="4"
-                placeholder="Digite sua mensagem..."
-                required></textarea>
+                <a class="reaction-btn"
+                    href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=util">
+                    📘 Útil <span><?php echo $reacoes['util']; ?></span>
+                </a>
 
-            <button type="submit" class="btn-primary">
-                Enviar mensagem
-            </button>
+                <a class="reaction-btn"
+                    href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=interessante">
+                    💡 Interessante <span><?php echo $reacoes['interessante']; ?></span>
+                </a>
 
-        </form>
+                <a class="reaction-btn"
+                    href="php/reagir.php?artigo_id=<?php echo $artigo['id']; ?>&tipo=duvida">
+                    ❓ Dúvida <span><?php echo $reacoes['duvida']; ?></span>
+                </a>
+
+                <button class="btn-primary contact-btn">
+                    Contato com autor
+                </button>
+
+            </div>
+
+        </article>
+
+        <section class="content-card comments-card">
+
+            <h2>Comentários</h2>
+
+            <form class="comment-form"
+                action="php/salvar_comentario.php"
+                method="POST">
+
+                <input type="hidden"
+                    name="artigo_id"
+                    value="<?php echo $artigo['id']; ?>">
+
+                <textarea
+                    name="comentario"
+                    rows="3"
+                    placeholder="Escreva um comentário..."
+                    required></textarea>
+
+                <button type="submit" class="btn-primary">
+                    Comentar
+                </button>
+
+            </form>
+
+            <?php while ($comentario = mysqli_fetch_assoc($resultado_comentarios)) { ?>
+
+                <div class="comment">
+
+                    <strong>
+                        <?php echo htmlspecialchars($comentario['nome']); ?>
+                    </strong>
+
+                    <p>
+                        <?php echo nl2br(htmlspecialchars($comentario['comentario'])); ?>
+                    </p>
+
+                </div>
+
+            <?php } ?>
+
+        </section>
+
+    </main>
+
+    <div class="modal" id="contactModal">
+
+        <div class="modal-card">
+
+            <button class="close-modal">×</button>
+
+            <h2>Contato com autor</h2>
+
+            <p>
+                Envie uma mensagem para
+                <?php echo htmlspecialchars($artigo['nome']); ?>.
+            </p>
+
+            <form action="php/salvar_contato.php" method="POST">
+
+                <input type="hidden"
+                    name="artigo_id"
+                    value="<?php echo $artigo['id']; ?>">
+
+                <input type="hidden"
+                    name="autor_id"
+                    value="<?php echo $artigo['autor_id']; ?>">
+
+                <textarea
+                    name="mensagem"
+                    rows="4"
+                    placeholder="Digite sua mensagem..."
+                    required></textarea>
+
+                <button type="submit" class="btn-primary">
+                    Enviar mensagem
+                </button>
+
+            </form>
+
+        </div>
 
     </div>
 
-</div>
-
-<script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
+
 </html>
