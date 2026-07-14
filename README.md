@@ -1,78 +1,165 @@
 # AcadConnect
 
-AcadConnect é uma rede social acadêmica desenvolvida como projeto da disciplina de Introdução à Engenharia.
+<p align="center">
 
-O sistema tem como objetivo permitir que estudantes publiquem artigos acadêmicos, interajam com outros usuários e compartilhem conhecimento de forma organizada, ética e acessível.
+![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3)
 
----
-
-## Objetivo do projeto
-
-O projeto foi criado para oferecer uma plataforma acadêmica onde usuários possam:
-
-- Publicar artigos acadêmicos
-- Anexar a versão oficial do artigo em PDF
-- Informar autores, palavras-chave e referências bibliográficas
-- Comentar publicações
-- Reagir aos conteúdos
-- Pesquisar artigos, autores e temas
-- Entrar em contato com autores
-- Gerenciar um perfil acadêmico
+</p>
 
 ---
 
-## Funcionalidades
+# 📚 Sobre o projeto
 
-### Usuários
+AcadConnect é uma rede social acadêmica desenvolvida durante a disciplina de **Introdução à Engenharia** da **Universidade Feevale**.
 
-- Cadastro de usuários
-- Login e logout
+O sistema foi criado para conectar estudantes e pesquisadores através da publicação de artigos acadêmicos, permitindo interação entre usuários por meio de comentários, reações, compartilhamento de conhecimento e contato direto com os autores.
+
+Além da publicação de artigos, o sistema também incentiva boas práticas acadêmicas, exigindo autoria e referências bibliográficas.
+
+---
+
+# 📰 Feed principal
+
+Após realizar o login, o usuário é direcionado ao feed principal da plataforma, onde pode pesquisar artigos, visualizar publicações recentes, reagir aos conteúdos e acessar os comentários.
+
+<p align="center">
+<img src="imagens/Feed.png" width="950">
+</p>
+
+---
+
+# 🔐 Login
+
+O acesso ao sistema é realizado através de autenticação de usuários cadastrados.
+
+<p align="center">
+<img src="imagens/Login.png" width="700">
+</p>
+
+---
+
+# ✍️ Publicação de artigos
+
+Cada usuário pode publicar artigos acadêmicos completos, preenchendo todas as informações necessárias para uma publicação organizada.
+
+O sistema permite informar:
+
+- título;
+- autores;
+- palavras-chave;
+- categoria;
+- resumo;
+- conteúdo completo;
+- referências bibliográficas;
+- upload do PDF oficial;
+- declaração de autoria.
+
+<p align="center">
+<img src="imagens/Publicar 1.png" width="900">
+</p>
+
+<p align="center">
+<img src="imagens/Publicar 2.png" width="900">
+</p>
+
+---
+
+# 📄 Visualização do artigo
+
+Cada publicação possui uma página própria contendo todas as informações do trabalho acadêmico.
+
+<p align="center">
+<img src="imagens/Post 1.png" width="900">
+</p>
+
+Além do conteúdo do artigo, o sistema apresenta:
+
+- autores;
+- palavras-chave;
+- número de visualizações;
+- download do PDF;
+- referências bibliográficas;
+- declaração de responsabilidade acadêmica.
+
+<p align="center">
+<img src="imagens/Post 2.png" width="900">
+</p>
+
+Também é possível interagir com o artigo através de comentários, reações e contato direto com o autor.
+
+<p align="center">
+<img src="imagens/Post 3.png" width="900">
+</p>
+
+---
+
+# 👤 Perfil do usuário
+
+Cada usuário possui um perfil acadêmico onde pode visualizar seus artigos publicados, editar suas informações e acessar as mensagens recebidas.
+
+<p align="center">
+<img src="imagens/Perfil.png" width="900">
+</p>
+
+---
+
+# ✨ Principais funcionalidades
+
+## 👤 Usuários
+
+- Cadastro
+- Login e Logout
 - Sessões em PHP
 - Perfil acadêmico
+- Upload de avatar
 - Edição de perfil
-- Upload de foto/avatar
 
-### Artigos
+## 📄 Artigos
 
 - Publicação de artigos
-- Visualização individual
-- Edição de artigos
-- Exclusão de artigos
+- Edição
+- Exclusão
 - Upload de PDF
-- Visualização e download de PDF
-- Campo de autores
-- Campo de palavras-chave
-- Campo de referências bibliográficas
+- Download de PDF
+- Visualização individual
 - Contador de visualizações
+- Autores
+- Palavras-chave
+- Referências bibliográficas
 
-### Ética acadêmica
+## 💬 Interações
 
-- Declaração de autoria obrigatória
-- Aviso de responsabilidade acadêmica
-- Campo para referências bibliográficas
-- Indicação de que o autor é responsável pelo conteúdo publicado
-
-### Interações
-
-- Comentários em artigos
-- Sistema de reações:
-  - Útil
-  - Interessante
-  - Dúvida
+- Comentários
+- Reações
+  - 👍 Útil
+  - 💡 Interessante
+  - ❓ Dúvida
 - Contato com autor
-- Contador de comentários
 
-### Feed
+## 🔍 Feed
 
 - Feed dinâmico
-- Pesquisa por título, resumo, categoria e autor
+- Pesquisa por título
+- Pesquisa por resumo
+- Pesquisa por categoria
+- Pesquisa por autor
+- Exibição de comentários
 - Exibição de reações
-- Exibição de quantidade de comentários
 - Layout responsivo
+
+## 🎓 Ética acadêmica
+
+- Declaração obrigatória de autoria
+- Responsabilidade do autor
+- Campo de referências bibliográficas
 
 ---
 
-## Tecnologias utilizadas
+# 🛠️ Tecnologias utilizadas
 
 ### Front-end
 
@@ -84,51 +171,75 @@ O projeto foi criado para oferecer uma plataforma acadêmica onde usuários poss
 
 - PHP
 
-### Banco de dados
+### Banco de Dados
 
 - MySQL
 
-### Ambiente de desenvolvimento
+### Ferramentas
 
 - XAMPP
-- VS Code
-- Git/GitHub
+- Visual Studio Code
+- Git
+- GitHub
 
 ---
 
-## Estrutura do projeto
+# 🚀 Como executar
 
-```txt
+Clone o projeto
+
+```bash
+git clone https://github.com/Breno-Alves-da-Silva/Projeto_introducao-engenharias
+```
+
+Inicie o Apache e o MySQL através do XAMPP.
+
+Importe o banco de dados MySQL.
+
+Acesse:
+
+```
+http://localhost/Projeto_introducao-engenharias
+```
+
+---
+
+# 📂 Estrutura do projeto
+
+```text
 Projeto_introducao-engenharias/
-│
+
 ├── css/
-│   └── style.css
-│
 ├── js/
-│   └── script.js
-│
 ├── php/
-│   ├── conexao.php
-│   ├── login.php
-│   ├── logout.php
-│   ├── cadastrar_usuario.php
-│   ├── salvar_artigo.php
-│   ├── atualizar_artigo.php
-│   ├── deletar_artigo.php
-│   ├── salvar_comentario.php
-│   ├── reagir.php
-│   ├── reagir_feed.php
-│   ├── salvar_contato.php
-│   └── atualizar_perfil.php
-│
 ├── uploads/
-│
+├── imagens/
 ├── index.php
-├── cadastro.php
 ├── feed.php
 ├── perfil.php
-├── artigo.php
 ├── publicar.php
-├── editar_artigo.php
-├── editar_perfil.php
+├── artigo.php
 └── README.md
+```
+
+---
+
+# 👨‍💻 Autor
+
+**Breno Alves da Silva**
+
+🎓 Estudante de Engenharia da Computação – Universidade Feevale
+
+💻 Técnico em Desenvolvimento de Sistemas – SENAC
+
+🔗 GitHub
+
+https://github.com/Breno-Alves-da-Silva
+
+💼 LinkedIn
+
+https://www.linkedin.com/in/breno-alves-da-silva
+
+---
+
+⭐ Este projeto foi desenvolvido com o objetivo de aplicar conceitos de desenvolvimento Full Stack, banco de dados, autenticação de usuários, CRUD, upload de arquivos, interações entre usuários e organização de conteúdo acadêmico.
