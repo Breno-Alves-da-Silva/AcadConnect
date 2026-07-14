@@ -1,10 +1,14 @@
 # AcadConnect
 
-![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+<p align="center">
+
+![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3)
+
+</p>
 
 ---
 
@@ -14,21 +18,7 @@ AcadConnect é uma rede social acadêmica desenvolvida durante a disciplina de *
 
 O sistema foi criado para conectar estudantes e pesquisadores através da publicação de artigos acadêmicos, permitindo interação entre usuários por meio de comentários, reações, compartilhamento de conhecimento e contato direto com os autores.
 
-Além da publicação de artigos, o sistema incentiva boas práticas acadêmicas, exigindo autoria e referências bibliográficas.
-
-**Repositório oficial:**
-
-https://github.com/Breno-Alves-da-Silva/AcadConnect
-
----
-
-# 🔐 Login
-
-O acesso ao sistema é realizado através da autenticação de usuários cadastrados.
-
-<p align="center">
-<img src="imagens/Login.png" width="900">
-</p>
+Além da publicação de artigos, o sistema também incentiva boas práticas acadêmicas, exigindo autoria e referências bibliográficas.
 
 ---
 
@@ -37,7 +27,17 @@ O acesso ao sistema é realizado através da autenticação de usuários cadastr
 Após realizar o login, o usuário é direcionado ao feed principal da plataforma, onde pode pesquisar artigos, visualizar publicações recentes, reagir aos conteúdos e acessar os comentários.
 
 <p align="center">
-<img src="imagens/Feed.png" width="900">
+<img src="imagens/Feed.png" width="950">
+</p>
+
+---
+
+# 🔐 Login
+
+O acesso ao sistema é realizado através de autenticação de usuários cadastrados.
+
+<p align="center">
+<img src="imagens/Login.png" width="700">
 </p>
 
 ---
@@ -59,7 +59,11 @@ O sistema permite informar:
 - declaração de autoria.
 
 <p align="center">
-<img src="imagens/Publicar.png" width="900">
+<img src="imagens/Publicar 1.png" width="900">
+</p>
+
+<p align="center">
+<img src="imagens/Publicar 2.png" width="900">
 </p>
 
 ---
@@ -69,7 +73,7 @@ O sistema permite informar:
 Cada publicação possui uma página própria contendo todas as informações do trabalho acadêmico.
 
 <p align="center">
-<img src="imagens/Artigo1.png" width="900">
+<img src="imagens/Post 1.png" width="900">
 </p>
 
 Além do conteúdo do artigo, o sistema apresenta:
@@ -82,13 +86,13 @@ Além do conteúdo do artigo, o sistema apresenta:
 - declaração de responsabilidade acadêmica.
 
 <p align="center">
-<img src="imagens/Artigo2.png" width="900">
+<img src="imagens/Post 2.png" width="900">
 </p>
 
 Também é possível interagir com o artigo através de comentários, reações e contato direto com o autor.
 
 <p align="center">
-<img src="imagens/Artigo3.png" width="900">
+<img src="imagens/Post 3.png" width="900">
 </p>
 
 ---
@@ -136,7 +140,7 @@ Cada usuário possui um perfil acadêmico onde pode visualizar seus artigos publ
   - ❓ Dúvida
 - Contato com autor
 
-## 🔎 Feed
+## 🔍 Feed
 
 - Feed dinâmico
 - Pesquisa por título
@@ -157,21 +161,21 @@ Cada usuário possui um perfil acadêmico onde pode visualizar seus artigos publ
 
 # 🛠️ Tecnologias utilizadas
 
-## Front-end
+### Front-end
 
 - HTML5
 - CSS3
 - JavaScript
 
-## Back-end
+### Back-end
 
 - PHP
 
-## 🗄️ Banco de Dados
+### Banco de Dados
 
 - MySQL
 
-## Ferramentas
+### Ferramentas
 
 - XAMPP
 - Visual Studio Code
@@ -211,13 +215,10 @@ AcadConnect/
 ├── uploads/
 ├── imagens/
 ├── index.php
-├── cadastro.php
 ├── feed.php
 ├── perfil.php
-├── artigo.php
 ├── publicar.php
-├── editar_artigo.php
-├── editar_perfil.php
+├── artigo.php
 └── README.md
 ```
 
